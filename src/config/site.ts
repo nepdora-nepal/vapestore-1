@@ -4,18 +4,32 @@ export const siteConfig = {
   name: "Nepdora",
   description: "Nepdora Preview System",
   get apiBaseUrl() {
-    return process.env.NEXT_PUBLIC_API_URL || `https://${TENANT_NAME}.nepdora.baliyoventures.com`;
+    return (
+      process.env.NEXT_PUBLIC_API_URL ||
+      `https://${TENANT_NAME}.nepdora.baliyoventures.com`
+    );
   },
   get mediaBaseUrl() {
-    return process.env.NEXT_PUBLIC_MEDIA_URL || `https://nepdora.baliyoventures.com/media/workspaces/${TENANT_NAME}/public`;
+    return (
+      process.env.NEXT_PUBLIC_MEDIA_URL ||
+      `https://nepdora.baliyoventures.com/media/workspaces/${TENANT_NAME}/public`
+    );
+  },
+  get builderBaseUrl() {
+    return (
+      process.env.NEXT_PUBLIC_BUILDER_URL || `https://builder-api.nepdora.com`
+    );
   },
   get endpoints() {
-    const apiBase = this.apiBaseUrl;
+    const apibuilder = this.builderBaseUrl;
     return {
-      fetchImage: (path: string) => `${this.mediaBaseUrl}/${path.startsWith("/") ? path.slice(1) : path}`,
-      listImages: () => `${apiBase}/builder/images-map/${TENANT_NAME}/`,
-      updateImageMap: () => `${apiBase}/builder/update-image-map/${TENANT_NAME}/`,
-      uploadImage: () => `${apiBase}/builder/upload-image/${TENANT_NAME}/`,
+      fetchImage: (path: string) =>
+        `${this.mediaBaseUrl}/${path.startsWith("/") ? path.slice(1) : path}`,
+      listImages: () => `${apibuilder}/api/builder/images-map/${TENANT_NAME}/`,
+      updateImageMap: () =>
+        `${apibuilder}/api/builder/update-image-map/${TENANT_NAME}/`,
+      uploadImage: () =>
+        `${apibuilder}/api/builder/upload-image/${TENANT_NAME}/`,
     };
   },
 };
@@ -27,7 +41,7 @@ export const getApiBaseUrl = (): string => {
 export const getImageUrl = (path: string): string => {
   if (!path) return "";
   if (path.startsWith("http")) return path;
-  
+
   const baseUrl = siteConfig.mediaBaseUrl;
   return `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`;
 };
